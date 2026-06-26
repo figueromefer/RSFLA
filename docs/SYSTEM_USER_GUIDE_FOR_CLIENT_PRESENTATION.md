@@ -1,38 +1,38 @@
-# RSFLA Reporting Platform - Guia de uso para presentacion al cliente
+# RSFLA Reporting Platform - Guía de uso para presentación al cliente
 
 ## 1. Objetivo del sistema
 
-Este sistema reemplaza el proceso manual de crear y actualizar reportes HTML por propiedad. La idea principal es que el equipo de RSFLA pueda capturar y actualizar la informacion del dia a dia en una plataforma web, mientras que el cliente propietario de cada inmueble puede consultar un reporte vivo cuando lo necesite.
+Este sistema reemplaza el proceso manual de crear y actualizar reportes HTML por propiedad. La idea principal es que el equipo de RSFLA pueda capturar y actualizar la información del día a día en una plataforma web, mientras que el cliente propietario de cada inmueble puede consultar un reporte vivo cuando lo necesite.
 
-Antes, el reporte era un documento estatico que se tenia que preparar y actualizar manualmente. Ahora, el reporte se alimenta directamente de la informacion que el equipo carga en el sistema: prospectos, tours, propuestas, leases, actividades de marketing, documentos y equipo asignado.
+Antes, el reporte era un documento estático que se tenía que preparar y actualizar manualmente. Ahora, el reporte se alimenta directamente de la información que el equipo carga en el sistema: prospectos, tours, propuestas, leases, actividades de marketing, documentos y equipo asignado.
 
-El objetivo de la demostracion es presentar esto no solo como un reporte digital, sino como una primera version de una plataforma de inteligencia y seguimiento para propiedades comerciales.
+El objetivo de la demostración es presentar esto no solo como un reporte digital, sino como una primera versión de una plataforma de inteligencia y seguimiento para propiedades comerciales.
 
 ---
 
 ## 2. Concepto general para explicar al cliente
 
-La forma mas sencilla de explicarlo es:
+La forma más sencilla de explicarlo es:
 
-> Creamos una plataforma donde cada propiedad tiene su propio dashboard vivo. El equipo de RSFLA puede administrar la informacion comercial y operativa de cada propiedad, y el propietario puede entrar con usuario y contrasena para consultar el estado actualizado del reporte en cualquier momento.
+> Creamos una plataforma donde cada propiedad tiene su propio dashboard vivo. El equipo de RSFLA puede administrar la información comercial y operativa de cada propiedad, y el propietario puede entrar con usuario y contraseña para consultar el estado actualizado del reporte en cualquier momento.
 
-El sistema esta dividido en dos experiencias:
+El sistema está dividido en dos experiencias:
 
 1. **Vista interna RSFLA**
-   - Para administracion diaria.
+   - Para administración diaria.
    - La usa el equipo de RSFLA.
    - Permite administrar propiedades, prospectos, marketing, documentos, equipo y usuarios.
 
 2. **Vista cliente / propietario**
    - Para consultar el reporte vivo.
    - El cliente solo ve sus propiedades asignadas.
-   - No ve informacion marcada como interna.
+   - No ve información marcada como interna.
 
 ---
 
 ## 3. Accesos de prueba
 
-Todas las cuentas sembradas usan la contrasena:
+Todas las cuentas sembradas usan la contraseña:
 
 ```txt
 password
@@ -45,7 +45,7 @@ admin@rsfla.test
 password
 ```
 
-Uso recomendado para demo interna completa.
+Uso recomendado para una demo interna completa.
 
 ### Staff RSFLA
 
@@ -54,7 +54,7 @@ maya@rsfla.test
 password
 ```
 
-Uso recomendado para mostrar como trabajaria un miembro del equipo.
+Uso recomendado para mostrar cómo trabajaría un miembro del equipo.
 
 ### Cliente / propietario
 
@@ -74,7 +74,7 @@ password
 
 ---
 
-## 4. Flujo recomendado para la presentacion
+## 4. Flujo recomendado para la presentación
 
 ### Paso 1: Explicar el problema actual
 
@@ -82,13 +82,13 @@ Comenzar explicando el flujo anterior:
 
 - RSFLA genera un reporte HTML por propiedad.
 - Ese reporte requiere actualizaciones manuales.
-- La informacion puede cambiar durante la semana.
+- La información puede cambiar durante la semana.
 - El cliente no tiene una forma directa de consultar el estado vivo.
-- El reporte depende de que alguien lo edite, lo exporte o lo envie.
+- El reporte depende de que alguien lo edite, lo exporte o lo envíe.
 
 Mensaje sugerido:
 
-> El objetivo fue convertir el reporte mensual en una plataforma viva. En lugar de actualizar manualmente un HTML, ahora el equipo captura la informacion operativa en el sistema y el cliente consulta un reporte actualizado en tiempo real.
+> El objetivo fue convertir el reporte mensual en una plataforma viva. En lugar de actualizar manualmente un HTML, ahora el equipo captura la información operativa en el sistema y el cliente consulta un reporte actualizado en tiempo real.
 
 ---
 
@@ -107,37 +107,37 @@ Puntos importantes:
 
 - El cliente no ve el panel administrativo.
 - El cliente solo ve las propiedades que tiene asignadas.
-- Si una propiedad esta inactiva o no asignada, el cliente no puede consultarla.
+- Si una propiedad está inactiva o no asignada, el cliente no puede consultarla.
 
 Mensaje sugerido:
 
-> Cada propietario tiene acceso unicamente a sus propiedades. Esto permite que RSFLA maneje varias propiedades y varios clientes dentro del mismo sistema sin exponer informacion cruzada.
+> Cada propietario tiene acceso únicamente a sus propiedades. Esto permite que RSFLA maneje varias propiedades y varios clientes dentro del mismo sistema sin exponer información cruzada.
 
 ---
 
-### Paso 3: Mostrar el reporte cliente
+### Paso 3: Mostrar el reporte del cliente
 
-En el reporte cliente, explicar las secciones principales.
+En el reporte del cliente, explicar las secciones principales.
 
 #### Header ejecutivo
 
 Muestra:
 
 - Nombre de la propiedad.
-- Titulo del reporte.
-- Fecha de ultima actualizacion.
-- Fecha de generacion del reporte.
-- Branding RSFLA.
+- Título del reporte.
+- Fecha de última actualización.
+- Fecha de generación del reporte.
+- Branding de RSFLA.
 
 Mensaje sugerido:
 
-> Esta pantalla es el reemplazo natural del reporte mensual, pero con la ventaja de que se mantiene actualizado con la informacion que RSFLA captura en el sistema.
+> Esta pantalla es el reemplazo natural del reporte mensual, pero con la ventaja de que se mantiene actualizada con la información que RSFLA captura en el sistema.
 
 #### Executive Summary
 
-Resumen automatico generado a partir de los datos disponibles.
+Resumen automático generado a partir de los datos disponibles.
 
-Sirve para que el cliente entienda rapidamente que esta pasando con la propiedad.
+Sirve para que el cliente entienda rápidamente qué está pasando con la propiedad.
 
 Mensaje sugerido:
 
@@ -155,7 +155,7 @@ Muestra indicadores como:
 
 Mensaje sugerido:
 
-> Estos indicadores permiten ver rapidamente la salud comercial de la propiedad.
+> Estos indicadores permiten ver rápidamente la salud comercial de la propiedad.
 
 #### Pipeline Detail
 
@@ -179,7 +179,7 @@ Cada registro puede mostrar:
 
 Mensaje sugerido:
 
-> En lugar de una tabla plana, el pipeline esta organizado por etapa para que el cliente entienda donde esta cada oportunidad.
+> En lugar de una tabla plana, el pipeline está organizado por etapa para que el cliente entienda dónde está cada oportunidad.
 
 #### Marketing Activity
 
@@ -195,7 +195,7 @@ Muestra las actividades visibles al cliente:
 
 Mensaje sugerido:
 
-> Aqui RSFLA puede documentar que acciones de marketing se han realizado para la propiedad.
+> Aquí RSFLA puede documentar qué acciones de marketing se han realizado para la propiedad.
 
 #### Documents / Property Links
 
@@ -216,15 +216,15 @@ Muestra miembros del equipo asignados a la propiedad.
 
 Mensaje sugerido:
 
-> Cada propiedad puede tener su equipo asignado, y el cliente puede identificar facilmente quien esta involucrado.
+> Cada propiedad puede tener su equipo asignado, y el cliente puede identificar fácilmente quién está involucrado.
 
 #### Print / Export
 
-El reporte tiene boton para imprimir o exportar desde el navegador.
+El reporte tiene botón para imprimir o exportar desde el navegador.
 
 Mensaje sugerido:
 
-> Aunque el sistema es vivo, tambien se puede generar una version imprimible para juntas, archivos internos o envio en PDF desde el navegador.
+> Aunque el sistema es vivo, también se puede generar una versión imprimible para juntas, archivos internos o envío en PDF desde el navegador.
 
 ---
 
@@ -242,10 +242,10 @@ Mostrar el dashboard interno.
 Puntos importantes:
 
 - El dashboard interno es para RSFLA.
-- Desde aqui se accede a los modulos principales.
+- Desde aquí se accede a los módulos principales.
 - El cliente no ve esta parte.
 
-Modulos principales:
+Módulos principales:
 
 - Dashboard.
 - Properties.
@@ -258,7 +258,7 @@ Modulos principales:
 
 ---
 
-## 6. Modulo Properties
+## 6. Módulo Properties
 
 Ruta:
 
@@ -273,7 +273,7 @@ Permite:
 - Ver propiedades activas/inactivas.
 - Ver total de prospects.
 - Ver prospects visibles al cliente.
-- Ver ultima actividad.
+- Ver última actividad.
 - Crear propiedades.
 - Editar propiedades.
 - Abrir el detalle interno de una propiedad.
@@ -293,11 +293,11 @@ Al abrir una propiedad, se muestra una vista centralizada con:
 
 Mensaje sugerido:
 
-> La propiedad es el centro del sistema. Todo lo relacionado con esa propiedad vive aqui: pipeline, documentos, marketing, actividad y reporte.
+> La propiedad es el centro del sistema. Todo lo relacionado con esa propiedad vive aquí: pipeline, documentos, marketing, actividad y reporte.
 
 ---
 
-## 7. Modulo Pipeline
+## 7. Módulo Pipeline
 
 Ruta:
 
@@ -315,7 +315,7 @@ Permite:
 - Filtrar por propiedad.
 - Filtrar por status.
 - Buscar por tenant, broker, use, suite o contacto.
-- Marcar si un prospecto es visible o no para cliente.
+- Marcar si un prospecto es visible o no para el cliente.
 
 ### Estados del pipeline
 
@@ -332,11 +332,11 @@ Cada vez que se crea un prospecto, se actualiza o cambia de estado, el sistema g
 
 Mensaje sugerido:
 
-> Pipeline es donde RSFLA mantiene vivo el reporte. Lo que se actualiza aqui se refleja en la vista del cliente, siempre respetando que se puede ocultar informacion interna.
+> Pipeline es donde RSFLA mantiene vivo el reporte. Lo que se actualiza aquí se refleja en la vista del cliente, siempre respetando que se puede ocultar información interna.
 
 ---
 
-## 8. Modulo Marketing
+## 8. Módulo Marketing
 
 Ruta:
 
@@ -361,20 +361,20 @@ Cada actividad puede tener:
 
 - Propiedad.
 - Tipo.
-- Titulo.
-- Descripcion.
+- Título.
+- Descripción.
 - Fecha.
-- Metrica opcional.
+- Métrica opcional.
 - URL opcional.
-- Visibilidad para cliente.
+- Visibilidad para el cliente.
 
 Mensaje sugerido:
 
-> Este modulo permite que RSFLA documente el trabajo de marketing que se realiza para cada propiedad y decida que se muestra al propietario.
+> Este módulo permite que RSFLA documente el trabajo de marketing que se realiza para cada propiedad y decida qué se muestra al propietario.
 
 ---
 
-## 9. Modulo Documents
+## 9. Módulo Documents
 
 Ruta:
 
@@ -391,7 +391,7 @@ Permite:
 - Eliminar links.
 - Filtrar por propiedad.
 - Filtrar por visibilidad.
-- Marcar si un documento es visible al cliente o interno.
+- Marcar si un documento es visible para el cliente o interno.
 
 Ejemplos:
 
@@ -406,7 +406,7 @@ Mensaje sugerido:
 
 ---
 
-## 10. Modulo Team
+## 10. Módulo Team
 
 Ruta:
 
@@ -439,7 +439,7 @@ Mensaje sugerido:
 
 ---
 
-## 11. Modulo Users
+## 11. Módulo Users
 
 Ruta:
 
@@ -467,16 +467,16 @@ Reglas importantes:
 
 - Admin puede administrar todos.
 - Staff no puede crear, editar ni eliminar admins.
-- Un usuario inactivo no puede iniciar sesion.
+- Un usuario inactivo no puede iniciar sesión.
 - Un cliente solo ve propiedades asignadas.
 
 Mensaje sugerido:
 
-> Este modulo permite que RSFLA gestione que clientes tienen acceso a que propiedades sin depender de cambios manuales en codigo.
+> Este módulo permite que RSFLA gestione qué clientes tienen acceso a qué propiedades sin depender de cambios manuales en código.
 
 ---
 
-## 12. Modulo Reports
+## 12. Módulo Reports
 
 Ruta:
 
@@ -484,7 +484,7 @@ Ruta:
 /reports
 ```
 
-Sirve para acceder rapidamente a reportes por propiedad desde la vista interna.
+Sirve para acceder rápidamente a reportes por propiedad desde la vista interna.
 
 Permite:
 
@@ -496,7 +496,7 @@ Permite:
 
 Mensaje sugerido:
 
-> Reports es un acceso rapido para revisar como vera el cliente el reporte de cada propiedad.
+> Reports es un acceso rápido para revisar cómo verá el cliente el reporte de cada propiedad.
 
 ---
 
@@ -504,39 +504,39 @@ Mensaje sugerido:
 
 ### No es solo un reporte
 
-El sistema evoluciono de un reporte HTML a una plataforma viva por propiedad.
+El sistema evolucionó de un reporte HTML a una plataforma viva por propiedad.
 
-### La informacion se actualiza desde RSFLA
+### La información se actualiza desde RSFLA
 
 El equipo administra pipeline, marketing, documentos y equipo.
 
 ### El cliente ve solo lo autorizado
 
-Cada prospecto, documento o actividad puede ser visible al cliente o mantenerse interno.
+Cada prospecto, documento o actividad puede ser visible para el cliente o mantenerse interno.
 
 ### El reporte es consultable en cualquier momento
 
-El cliente no depende de esperar el envio mensual.
+El cliente no depende de esperar el envío mensual.
 
 ### Puede imprimirse/exportarse
 
-El reporte mantiene una salida practica para juntas o archivo.
+El reporte mantiene una salida práctica para juntas o archivo.
 
 ### Puede crecer a futuro
 
 La arquitectura permite agregar:
 
-- Graficas.
+- Gráficas.
 - Comparativos mensuales.
-- Reportes historicos.
+- Reportes históricos.
 - Importador CSV.
-- Insights automaticos.
+- Insights automáticos.
 - Notificaciones.
 - Multiempresa.
 
 ---
 
-## 14. Guion breve de presentacion
+## 14. Guion breve de presentación
 
 1. **Contexto**
    - Actualmente el reporte se genera manualmente.
@@ -557,16 +557,16 @@ La arquitectura permite agregar:
 
 4. **Control de visibilidad**
    - Mostrar que un prospecto puede marcarse como interno.
-   - Explicar que el cliente solo ve informacion aprobada.
+   - Explicar que el cliente solo ve información aprobada.
 
 5. **Valor para el cliente**
    - Menos trabajo manual.
-   - Informacion mas actual.
+   - Información más actual.
    - Mayor transparencia.
-   - Mejor experiencia que un PDF o HTML estatico.
+   - Mejor experiencia que un PDF o HTML estático.
 
 6. **Futuro**
-   - Graficas, tendencias, comparativos y reportes historicos.
+   - Gráficas, tendencias, comparativos y reportes históricos.
 
 ---
 
@@ -586,7 +586,7 @@ La arquitectura permite agregar:
 
 ### Demo como admin
 
-1. Cerrar sesion.
+1. Cerrar sesión.
 2. Entrar con `admin@rsfla.test` / `password`.
 3. Abrir Properties.
 4. Abrir Utah Campus.
@@ -599,16 +599,16 @@ La arquitectura permite agregar:
 
 ---
 
-## 16. Advertencias para la presentacion
+## 16. Advertencias para la presentación
 
-Este sistema esta en version inicial/MVP funcional.
+Este sistema está en versión inicial/MVP funcional.
 
-Evitar prometer como terminado lo siguiente si todavia no se ha implementado completamente:
+Evitar prometer como terminado lo siguiente si todavía no se ha implementado completamente:
 
-- Graficas avanzadas.
-- Comparativos historicos.
-- Importador automatico de CSV.
-- Envio automatico por email.
+- Gráficas avanzadas.
+- Comparativos históricos.
+- Importador automático de CSV.
+- Envío automático por email.
 - PDF generado desde backend.
 - Notificaciones.
 - Multiempresa.
@@ -616,19 +616,19 @@ Evitar prometer como terminado lo siguiente si todavia no se ha implementado com
 
 Forma recomendada de decirlo:
 
-> Esta primera version ya permite administrar la informacion principal y mostrar un reporte vivo. Las siguientes fases pueden enfocarse en automatizacion, graficas, historicos e integraciones.
+> Esta primera versión ya permite administrar la información principal y mostrar un reporte vivo. Las siguientes fases pueden enfocarse en automatización, gráficas, históricos e integraciones.
 
 ---
 
 ## 17. Siguiente fase recomendada
 
-Para que el sistema se vea mas premium ante cliente, la siguiente fase recomendada es UX/UI polish:
+Para que el sistema se vea más premium ante el cliente, la siguiente fase recomendada es UX/UI polish:
 
 - Mejorar dashboard ejecutivo.
-- Agregar graficas simples.
+- Agregar gráficas simples.
 - Mejorar responsive.
 - Refinar branding visual RSFLA.
-- Mejorar experiencia de impresion.
+- Mejorar experiencia de impresión.
 - Crear comparativos mensuales.
 - Preparar importador CSV.
 
@@ -636,4 +636,4 @@ Para que el sistema se vea mas premium ante cliente, la siguiente fase recomenda
 
 ## 18. Mensaje final para cliente
 
-> Este proyecto convierte el reporte mensual de RSFLA en una plataforma viva de seguimiento por propiedad. El equipo puede actualizar informacion operativa y comercial en tiempo real, mientras que el propietario accede a un reporte ejecutivo actualizado, organizado y exportable. La primera version ya cubre propiedades, pipeline, marketing, documentos, equipo, usuarios y reportes, y deja la base lista para evolucionar hacia analitica, automatizacion e inteligencia de negocio.
+> Este proyecto convierte el reporte mensual de RSFLA en una plataforma viva de seguimiento por propiedad. El equipo puede actualizar información operativa y comercial en tiempo real, mientras que el propietario accede a un reporte ejecutivo actualizado, organizado y exportable. La primera versión ya cubre propiedades, pipeline, marketing, documentos, equipo, usuarios y reportes, y deja la base lista para evolucionar hacia analítica, automatización e inteligencia de negocio.
