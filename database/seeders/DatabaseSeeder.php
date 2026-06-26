@@ -9,6 +9,7 @@ use App\Models\Prospect;
 use App\Models\ProspectActivity;
 use App\Models\TeamMember;
 use App\Models\User;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,6 +20,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = Faker::create();
+
         $admin = User::create([
             'name' => 'RSFLA Admin',
             'email' => 'admin@rsfla.test',
@@ -45,7 +48,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Proposal Manager',
                 'department' => 'Sales',
             ],
-        ])->map(function (array $member) {
+        ])->map(function (array $member) use ($faker) {
             $user = User::create([
                 'name' => $member['name'],
                 'email' => $member['email'],
@@ -56,9 +59,9 @@ class DatabaseSeeder extends Seeder
             return TeamMember::create([
                 'user_id' => $user->id,
                 'name' => $member['name'],
-                'dre' => 'DRE '.fake()->unique()->numberBetween(1000000, 9999999),
+                'dre' => 'DRE '.$faker->unique()->numberBetween(1000000, 9999999),
                 'email' => $member['email'],
-                'phone' => fake()->phoneNumber(),
+                'phone' => $faker->phoneNumber(),
                 'bio_url' => 'https://rsfla.com/team/'.str($member['name'])->slug(),
                 'photo' => null,
                 'title' => $member['title'],
@@ -174,11 +177,11 @@ class DatabaseSeeder extends Seeder
                 'first_name' => $firstName,
                 'last_name' => $lastName,
                 'email' => $email,
-                'phone' => fake()->phoneNumber(),
+                'phone' => $faker->phoneNumber(),
                 'source' => $source,
                 'status' => $status,
-                'budget' => fake()->numberBetween(1100, 2200),
-                'desired_move_in' => now()->addMonths(fake()->numberBetween(1, 5))->startOfMonth(),
+                'budget' => $faker->numberBetween(1100, 2200),
+                'desired_move_in' => now()->addMonths($faker->numberBetween(1, 5))->startOfMonth(),
                 'last_contacted_at' => $lastContactedAt,
                 'is_active' => $status !== Prospect::STATUS_INACTIVE,
                 'notes' => $notes,
