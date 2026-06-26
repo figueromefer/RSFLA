@@ -25,8 +25,8 @@ return new class extends Migration
             $table->boolean('visible_to_client')->default(true);
             $table->timestamps();
 
-            $table->index(['property_id', 'visible_to_client', 'activity_date']);
-            $table->index(['type', 'activity_date']);
+            $table->index(['property_id', 'visible_to_client', 'activity_date'], 'ma_prop_visible_date_idx');
+            $table->index(['type', 'activity_date'], 'ma_type_date_idx');
         });
     }
 
