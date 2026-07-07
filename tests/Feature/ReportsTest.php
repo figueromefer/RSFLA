@@ -191,6 +191,83 @@ class ReportsTest extends TestCase
             ]);
     }
 
+    public function test_client_report_shows_public_prospect_fields_and_hides_private_fields(): void
+    {
+        $client = User::factory()->create([
+            'role' => User::ROLE_CLIENT,
+        ]);
+        $property = $this->property();
+        $property->clients()->attach($client->id);
+
+        $this->prospect($property, [
+            'tenant' => 'Visible Client Tenant',
+            'opportunity_date' => '2026-07-15',
+            'public_notes' => 'Public note for owner report.',
+            'company' => 'Private Company LLC',
+            'contact_name' => 'Private Contact Name',
+            'email' => 'private-prospect@example.com',
+            'phone' => '555-0188',
+            'notes' => 'Private internal note only.',
+        ]);
+
+        $this->actingAs($client)
+            ->get(route('client.properties.show', $property))
+            ->assertOk()
+            ->assertSee('Visible Client Tenant')
+            ->assertSee('07-15-2026')
+            ->assertSee('Public Notes:')
+            ->assertSee('Public note for owner report.')
+            ->assertDontSee('Private Company LLC')
+            ->assertDontSee('Private Contact Name')
+            ->assertDontSee('private-prospect@example.com')
+            ->assertDontSee('555-0188')
+            ->assertDontSee('Private internal note only.');
+    }
+
+    public function test_client_report_kpis_link_to_report_sections(): void
+    {
+        $client = User::factory()->create([
+            'role' => User::ROLE_CLIENT,
+        ]);
+        $property = $this->property();
+        $property->clients()->attach($client->id);
+
+        $this->actingAs($client)
+            ->get(route('client.properties.show', $property))
+            ->assertOk()
+            ->assertSee('href="#pipeline-active-prospects"', false)
+            ->assertSee('href="#pipeline-tours"', false)
+            ->assertSee('href="#pipeline-proposals"', false)
+            ->assertSee('href="#marketing-activity"', false)
+            ->assertSee('id="pipeline-active-prospects"', false)
+            ->assertSee('id="pipeline-tours"', false)
+            ->assertSee('id="pipeline-proposals"', false)
+            ->assertSee('id="marketing-activity"', false);
+    }
+
+    public function test_client_report_pipeline_sections_are_collapsible(): void
+    {
+        $client = User::factory()->create([
+            'role' => User::ROLE_CLIENT,
+        ]);
+        $property = $this->property();
+        $property->clients()->attach($client->id);
+
+        $response = $this->actingAs($client)
+            ->get(route('client.properties.show', $property));
+
+        $response->assertOk()
+            ->assertSee('<details id="pipeline-lease"', false)
+            ->assertSee('<details id="pipeline-proposals"', false)
+            ->assertSee('<details id="pipeline-tours"', false)
+            ->assertSee('<details id="pipeline-active-prospects"', false)
+            ->assertSee('<details id="pipeline-new-leads"', false)
+            ->assertSee('<details id="pipeline-inactive"', false)
+            ->assertSee('<summary', false)
+            ->assertSee('Click to expand or close')
+            ->assertSee('No client-visible prospects in this stage.');
+    }
+
     public function test_internal_prospects_do_not_appear_on_client_report(): void
     {
         $client = User::factory()->create([

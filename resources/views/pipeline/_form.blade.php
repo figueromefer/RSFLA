@@ -17,7 +17,7 @@
 <div class="grid gap-5 lg:grid-cols-2">
     <div class="lg:col-span-2">
         <h2 class="font-rsfla-heading text-xl font-bold text-[#424143]">Opportunity</h2>
-        <p class="mt-1 text-sm text-[#424143]/60">Core pipeline details used by the internal team and the client report.</p>
+        <p class="mt-1 text-sm font-medium text-[#4f7423]">Client-visible information shown in the report when the prospect is visible to the client.</p>
     </div>
 
     <div>
@@ -37,6 +37,12 @@
                 <option value="{{ $status }}" @selected($selectedStatus === $status)>{{ \App\Models\Prospect::statusFormLabel($status) }}</option>
             @endforeach
         </select>
+    </div>
+
+    <div>
+        <label for="opportunity_date" class="text-sm font-semibold text-[#424143]">Date</label>
+        <input id="opportunity_date" name="opportunity_date" type="date" value="{{ old('opportunity_date', $prospect->opportunity_date?->format('Y-m-d')) }}" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
+        <p class="mt-1 text-xs text-[#424143]/55">Shown in reports as MM-DD-YYYY.</p>
     </div>
 
     <div>
@@ -69,9 +75,21 @@
         <input id="broker" name="broker" value="{{ old('broker', $prospect->broker) }}" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
     </div>
 
+    <div class="lg:col-span-2">
+        <label for="public_notes" class="text-sm font-semibold text-[#424143]">Public Notes</label>
+        <textarea id="public_notes" name="public_notes" rows="4" class="mt-2 w-full rounded-md border border-[#424143]/20 bg-white px-3 py-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">{{ old('public_notes', $prospect->public_notes) }}</textarea>
+        <p class="mt-1 text-xs font-medium text-[#4f7423]">Visible to clients in the report.</p>
+    </div>
+
     <div class="border-t border-[#424143]/10 pt-5 lg:col-span-2">
         <h2 class="font-rsfla-heading text-xl font-bold text-[#424143]">Contact</h2>
-        <p class="mt-1 text-sm text-[#424143]/60">Primary contact details for follow-up and activity history.</p>
+        <p class="mt-1 text-sm font-medium text-[#424143]/60">Private internal information. This section is not shown in client reports.</p>
+    </div>
+
+    <div>
+        <label for="company" class="text-sm font-semibold text-[#424143]">Company</label>
+        <input id="company" name="company" value="{{ old('company', $prospect->company) }}" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
+        <p class="mt-1 text-xs text-[#424143]/55">Internal only.</p>
     </div>
 
     <div>
@@ -96,8 +114,9 @@
 </div>
 
 <div class="border-t border-[#424143]/10 pt-5">
-    <label for="notes" class="text-sm font-semibold text-[#424143]">Notes</label>
+    <label for="notes" class="text-sm font-semibold text-[#424143]">Private Internal Notes</label>
     <textarea id="notes" name="notes" rows="5" class="mt-2 w-full rounded-md border border-[#424143]/20 bg-white px-3 py-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">{{ old('notes', $prospect->notes) }}</textarea>
+    <p class="mt-1 text-xs font-medium text-[#424143]/60">Internal only. These notes are not visible in client reports.</p>
 </div>
 
 <label class="flex items-start gap-3 rounded-lg border border-[#424143]/10 bg-[#f7f8f5] p-4 text-sm font-medium text-[#424143]">

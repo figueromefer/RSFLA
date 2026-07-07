@@ -70,11 +70,13 @@ class Prospect extends Model
         'company',
         'source',
         'status',
+        'opportunity_date',
         'budget',
         'desired_move_in',
         'last_contacted_at',
         'is_active',
         'notes',
+        'public_notes',
         'visible_to_client',
         'sort_order',
     ];
@@ -83,6 +85,7 @@ class Prospect extends Model
     {
         return [
             'budget' => 'decimal:2',
+            'opportunity_date' => 'date',
             'desired_move_in' => 'date',
             'last_contacted_at' => 'datetime',
             'is_active' => 'boolean',

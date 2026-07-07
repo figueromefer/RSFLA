@@ -55,6 +55,7 @@
                     <tr class="text-left text-xs font-semibold uppercase tracking-wide text-[#424143]/60">
                         <th class="px-4 py-3">Property</th>
                         <th class="px-4 py-3">Tenant</th>
+                        <th class="px-4 py-3">Date</th>
                         <th class="px-4 py-3">Suite</th>
                         <th class="px-4 py-3">Use</th>
                         <th class="px-4 py-3">RSF</th>
@@ -70,8 +71,18 @@
                             <td class="whitespace-nowrap px-4 py-3 font-medium text-[#424143]">{{ $prospect->property->name }}</td>
                             <td class="px-4 py-3">
                                 <div class="font-semibold text-[#424143]">{{ $prospect->tenant ?: $prospect->full_name }}</div>
-                                <div class="text-xs text-[#424143]/55">{{ $prospect->contact_name ?: 'No contact' }}</div>
+                                <div class="mt-1 space-y-0.5 text-xs text-[#424143]/55">
+                                    <div>{{ $prospect->company ? 'Company: '.$prospect->company : 'No company' }}</div>
+                                    <div>{{ $prospect->contact_name ?: 'No contact' }}{{ $prospect->email ? ' · '.$prospect->email : '' }}{{ $prospect->phone ? ' · '.$prospect->phone : '' }}</div>
+                                    @if ($prospect->public_notes)
+                                        <div class="max-w-sm truncate text-[#4f7423]">Public: {{ $prospect->public_notes }}</div>
+                                    @endif
+                                    @if ($prospect->notes)
+                                        <div class="max-w-sm truncate">Private: {{ $prospect->notes }}</div>
+                                    @endif
+                                </div>
                             </td>
+                            <td class="whitespace-nowrap px-4 py-3 text-[#424143]/70">{{ $prospect->opportunity_date?->format('m-d-Y') ?: '-' }}</td>
                             <td class="whitespace-nowrap px-4 py-3 text-[#424143]/70">{{ $prospect->suite ?: '-' }}</td>
                             <td class="whitespace-nowrap px-4 py-3 text-[#424143]/70">{{ $prospect->use_type ?: '-' }}</td>
                             <td class="whitespace-nowrap px-4 py-3 text-[#424143]/70">{{ $prospect->rsf ? number_format($prospect->rsf) : '-' }}</td>
@@ -88,7 +99,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="px-4 py-10 text-center text-sm text-[#424143]/60">No prospects match the current filters.</td>
+                            <td colspan="10" class="px-4 py-10 text-center text-sm text-[#424143]/60">No prospects match the current filters.</td>
                         </tr>
                     @endforelse
                 </tbody>

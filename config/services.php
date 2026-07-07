@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'google_places' => [
+        'enabled' => filter_var(env('GOOGLE_PLACES_ENABLED', false), FILTER_VALIDATE_BOOLEAN),
+        'api_key' => env('GOOGLE_PLACES_API_KEY'),
+    ],
+
 ];

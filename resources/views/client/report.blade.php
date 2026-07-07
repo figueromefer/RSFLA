@@ -19,12 +19,12 @@
         Prospect::STATUS_INACTIVE => 'Inactive',
     ];
     $pipelineGroups = [
-        'Lease' => [Prospect::STATUS_LEASE_SIGNED],
-        'Proposals' => [Prospect::STATUS_PROPOSAL_SENT, Prospect::STATUS_PROPOSAL_ACCEPTED],
-        'Tours' => [Prospect::STATUS_TOUR_SCHEDULED, Prospect::STATUS_TOUR_COMPLETED],
-        'Active Prospects' => [Prospect::STATUS_PROSPECT],
-        'New Leads' => [Prospect::STATUS_LEAD],
-        'Inactive' => [Prospect::STATUS_INACTIVE],
+        ['label' => 'Lease', 'anchor' => 'pipeline-lease', 'statuses' => [Prospect::STATUS_LEASE_SIGNED]],
+        ['label' => 'Proposals', 'anchor' => 'pipeline-proposals', 'statuses' => [Prospect::STATUS_PROPOSAL_SENT, Prospect::STATUS_PROPOSAL_ACCEPTED]],
+        ['label' => 'Tours', 'anchor' => 'pipeline-tours', 'statuses' => [Prospect::STATUS_TOUR_SCHEDULED, Prospect::STATUS_TOUR_COMPLETED]],
+        ['label' => 'Active Prospects', 'anchor' => 'pipeline-active-prospects', 'statuses' => [Prospect::STATUS_PROSPECT]],
+        ['label' => 'New Leads', 'anchor' => 'pipeline-new-leads', 'statuses' => [Prospect::STATUS_LEAD]],
+        ['label' => 'Inactive', 'anchor' => 'pipeline-inactive', 'statuses' => [Prospect::STATUS_INACTIVE]],
     ];
     $summaryParts = [
         "{$metrics['activeProspects']} active ".str('prospect')->plural($metrics['activeProspects']),
@@ -100,22 +100,26 @@
                     </p>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="rounded-md border border-[#424143]/10 bg-[#f7f8f5] p-4">
+                    <a href="#pipeline-active-prospects" class="group rounded-md border border-[#424143]/10 bg-[#f7f8f5] p-4 transition hover:border-[#8DC442] hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8DC442]/25">
                         <p class="text-xs font-semibold uppercase tracking-wide text-[#424143]/55">Active Prospects</p>
                         <p class="mt-2 font-rsfla-heading text-3xl font-bold text-[#424143]">{{ $metrics['activeProspects'] }}</p>
-                    </div>
-                    <div class="rounded-md border border-[#424143]/10 bg-[#f7f8f5] p-4">
+                        <p class="mt-2 text-xs font-semibold text-[#4f7423] opacity-80 group-hover:opacity-100">View section</p>
+                    </a>
+                    <a href="#pipeline-tours" class="group rounded-md border border-[#424143]/10 bg-[#f7f8f5] p-4 transition hover:border-[#8DC442] hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8DC442]/25">
                         <p class="text-xs font-semibold uppercase tracking-wide text-[#424143]/55">Tours</p>
                         <p class="mt-2 font-rsfla-heading text-3xl font-bold text-[#424143]">{{ $metrics['tours'] }}</p>
-                    </div>
-                    <div class="rounded-md border border-[#424143]/10 bg-[#f7f8f5] p-4">
+                        <p class="mt-2 text-xs font-semibold text-[#4f7423] opacity-80 group-hover:opacity-100">View section</p>
+                    </a>
+                    <a href="#pipeline-proposals" class="group rounded-md border border-[#424143]/10 bg-[#f7f8f5] p-4 transition hover:border-[#8DC442] hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8DC442]/25">
                         <p class="text-xs font-semibold uppercase tracking-wide text-[#424143]/55">Proposals</p>
                         <p class="mt-2 font-rsfla-heading text-3xl font-bold text-[#424143]">{{ $metrics['proposals'] }}</p>
-                    </div>
-                    <div class="rounded-md border border-[#424143]/10 bg-[#f7f8f5] p-4">
+                        <p class="mt-2 text-xs font-semibold text-[#4f7423] opacity-80 group-hover:opacity-100">View section</p>
+                    </a>
+                    <a href="#marketing-activity" class="group rounded-md border border-[#424143]/10 bg-[#f7f8f5] p-4 transition hover:border-[#8DC442] hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8DC442]/25">
                         <p class="text-xs font-semibold uppercase tracking-wide text-[#424143]/55">Marketing</p>
                         <p class="mt-2 font-rsfla-heading text-3xl font-bold text-[#424143]">{{ $metrics['marketingActivity'] }}</p>
-                    </div>
+                        <p class="mt-2 text-xs font-semibold text-[#4f7423] opacity-80 group-hover:opacity-100">View section</p>
+                    </a>
                 </div>
             </div>
         </section>
@@ -157,15 +161,21 @@
                     </div>
 
                     <div class="mt-6 space-y-5">
-                        @foreach ($pipelineGroups as $groupLabel => $statuses)
+                        @foreach ($pipelineGroups as $group)
                             @php
-                                $groupProspects = $visibleProspects->whereIn('status', $statuses);
+                                $groupProspects = $visibleProspects->whereIn('status', $group['statuses']);
                             @endphp
-                            <section class="report-section rounded-md border border-[#424143]/10">
-                                <div class="flex items-center justify-between gap-3 border-b border-[#424143]/10 bg-[#f7f8f5] px-4 py-3">
-                                    <h3 class="font-rsfla-heading text-lg font-bold text-[#424143]">{{ $groupLabel }}</h3>
+                            <details id="{{ $group['anchor'] }}" class="report-section group rounded-md border border-[#424143]/10 scroll-mt-6">
+                                <summary class="flex cursor-pointer list-none items-center justify-between gap-3 bg-[#f7f8f5] px-4 py-3 transition hover:bg-[#eef3e8]">
+                                    <span class="flex items-center gap-3">
+                                        <span class="inline-flex size-6 items-center justify-center rounded-full border border-[#424143]/15 bg-white text-sm font-bold text-[#424143] group-open:rotate-90">›</span>
+                                        <span>
+                                            <span class="block font-rsfla-heading text-lg font-bold text-[#424143]">{{ $group['label'] }}</span>
+                                            <span class="block text-xs font-medium text-[#424143]/55">Click to expand or close</span>
+                                        </span>
+                                    </span>
                                     <span class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-[#424143]/60">{{ $groupProspects->count() }}</span>
-                                </div>
+                                </summary>
                                 <div class="divide-y divide-[#424143]/10">
                                     @forelse ($groupProspects as $prospect)
                                         <article class="grid gap-3 px-4 py-4 lg:grid-cols-[1.1fr_0.9fr_0.8fr]">
@@ -190,17 +200,28 @@
                                                     <dt class="font-semibold uppercase tracking-wide text-[#424143]/45">RSF</dt>
                                                     <dd class="mt-0.5 text-[#424143]">{{ $prospect->rsf ? number_format($prospect->rsf) : 'TBD' }}</dd>
                                                 </div>
+                                                <div>
+                                                    <dt class="font-semibold uppercase tracking-wide text-[#424143]/45">Date</dt>
+                                                    <dd class="mt-0.5 text-[#424143]">{{ $prospect->opportunity_date?->format('m-d-Y') ?: 'TBD' }}</dd>
+                                                </div>
                                             </dl>
                                             <div class="text-xs">
                                                 <p class="font-semibold uppercase tracking-wide text-[#424143]/45">Broker</p>
                                                 <p class="mt-1 text-sm text-[#424143]">{{ $prospect->broker ?: 'Direct / TBD' }}</p>
                                             </div>
+                                            @if ($prospect->public_notes)
+                                                <div class="lg:col-span-3 rounded-md border border-[#8DC442]/20 bg-[#f7f8f5] px-3 py-2 text-sm leading-6 text-[#424143]/70">
+                                                    <span class="font-semibold text-[#424143]">Public Notes:</span> {{ $prospect->public_notes }}
+                                                </div>
+                                            @endif
                                         </article>
                                     @empty
-                                        <div class="px-4 py-5 text-sm text-[#424143]/60">No client-visible prospects in this stage.</div>
+                                        <div class="px-4 py-5">
+                                            <p class="rounded-md border border-dashed border-[#424143]/20 bg-white p-4 text-sm text-[#424143]/60">No client-visible prospects in this stage.</p>
+                                        </div>
                                     @endforelse
                                 </div>
-                            </section>
+                            </details>
                         @endforeach
                     </div>
                 </div>
@@ -231,7 +252,7 @@
             </div>
 
             <aside class="space-y-6">
-                <div class="print-card rounded-lg border border-[#424143]/10 bg-white p-5 shadow-sm">
+                <div id="marketing-activity" class="print-card rounded-lg border border-[#424143]/10 bg-white p-5 shadow-sm scroll-mt-6">
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <p class="text-xs font-semibold uppercase tracking-wide text-[#8DC442]">Monthly Activity</p>
@@ -314,4 +335,27 @@
             </aside>
         </section>
     </div>
+
+    <script>
+        (() => {
+            const openedByPrint = new WeakSet();
+
+            window.addEventListener('beforeprint', () => {
+                document.querySelectorAll('details.report-section').forEach((section) => {
+                    if (! section.open) {
+                        openedByPrint.add(section);
+                        section.open = true;
+                    }
+                });
+            });
+
+            window.addEventListener('afterprint', () => {
+                document.querySelectorAll('details.report-section').forEach((section) => {
+                    if (openedByPrint.has(section)) {
+                        section.open = false;
+                    }
+                });
+            });
+        })();
+    </script>
 </x-layouts.app>
