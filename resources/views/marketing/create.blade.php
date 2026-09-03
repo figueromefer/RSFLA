@@ -1,11 +1,11 @@
-<x-layouts.app title="Create Marketing Activity | RSFLA">
+<x-layouts.app title="Add Marketing Activity | RSFLA">
     <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
             <div class="mb-3 h-1 w-14 bg-[#8DC442]"></div>
-            <h1 class="font-rsfla-heading text-3xl font-bold text-[#424143] sm:text-4xl">Create Marketing Activity</h1>
+            <h1 class="font-rsfla-heading text-3xl font-bold text-[#424143] sm:text-4xl">Add Marketing Activity</h1>
             <p class="mt-2 text-sm text-[#424143]/65">Record marketing movement for a property and client report.</p>
         </div>
-        <a href="{{ route('marketing.index') }}" class="inline-flex h-10 items-center justify-center rounded-md border border-[#424143]/15 bg-white px-4 text-sm font-semibold text-[#424143] shadow-sm transition hover:border-[#8DC442]">Back to marketing</a>
+        <a href="{{ route('marketing.index') }}" class="inline-flex h-10 items-center justify-center rounded-md border border-[#424143]/15 bg-white px-4 text-sm font-semibold text-[#424143] shadow-sm transition hover:border-[#8DC442]">Back to Marketing Activity</a>
     </div>
 
     <form method="POST" action="{{ route('marketing.store') }}" class="max-w-5xl space-y-6 rounded-lg border border-[#424143]/10 bg-white p-6 shadow-sm">

@@ -1,4 +1,4 @@
-<x-layouts.app title="Marketing | RSFLA">
+<x-layouts.app title="Marketing Activity | RSFLA">
     @if (session('status'))
         <div class="mb-5 rounded-lg border border-[#8DC442]/30 bg-[#8DC442]/10 p-4 text-sm font-semibold text-[#4f7423]">{{ session('status') }}</div>
     @endif
@@ -6,10 +6,10 @@
     <div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
             <div class="mb-3 h-1 w-14 bg-[#8DC442]"></div>
-            <h1 class="font-rsfla-heading text-3xl font-bold text-[#424143] sm:text-4xl">Marketing</h1>
-            <p class="mt-2 text-sm text-[#424143]/65">Track campaigns, broadcast emails, listing updates, outreach, and client-visible marketing wins.</p>
+            <h1 class="font-rsfla-heading text-3xl font-bold text-[#424143] sm:text-4xl">Marketing Activity</h1>
+            <p class="mt-2 text-sm text-[#424143]/65">Maintain marketing updates shown in client reports.</p>
         </div>
-        <a href="{{ route('marketing.create', ['property_id' => $filters['property_id'] ?? null]) }}" class="inline-flex h-10 items-center justify-center rounded-md bg-[#8DC442] px-4 text-sm font-semibold text-[#243018] shadow-sm transition hover:bg-[#7ab336]">Create activity</a>
+        <a href="{{ route('marketing.create', ['property_id' => $filters['property_id'] ?? null]) }}" class="inline-flex h-10 items-center justify-center rounded-md bg-[#8DC442] px-4 text-sm font-semibold text-[#243018] shadow-sm transition hover:bg-[#7ab336]">Add Marketing Activity</a>
     </div>
 
     <form method="GET" action="{{ route('marketing.index') }}" class="mb-5 grid gap-3 rounded-lg border border-[#424143]/10 bg-white p-4 shadow-sm xl:grid-cols-[1fr_1fr_1fr_2fr_auto]">
@@ -72,7 +72,7 @@
                             <td class="whitespace-nowrap px-4 py-3 text-right">
                                 <div class="flex justify-end gap-3">
                                     <a href="{{ route('marketing.edit', $activity) }}" class="font-semibold text-[#4f7423] transition hover:text-[#8DC442]">Edit</a>
-                                    <form method="POST" action="{{ route('marketing.destroy', $activity) }}" onsubmit="return confirm('Delete this marketing activity?');">
+                                    <form method="POST" action="{{ route('marketing.destroy', $activity) }}" onsubmit="return confirm('Delete this activity?');">
                                         @csrf
                                         @method('DELETE')
                                         <button class="font-semibold text-red-600 transition hover:text-red-700" type="submit">Delete</button>
@@ -82,7 +82,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-4 py-10 text-center text-sm text-[#424143]/60">No marketing activities match the current filters.</td>
+                            <td colspan="6" class="px-4 py-10 text-center text-sm text-[#424143]/60">No activities match the current filters.</td>
                         </tr>
                     @endforelse
                 </tbody>

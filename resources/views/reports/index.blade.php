@@ -12,7 +12,7 @@
             <div class="col-span-5">Property</div>
             <div class="col-span-2">Status</div>
             <div class="col-span-2 text-right">Visible Prospects</div>
-            <div class="col-span-2 text-right">Marketing</div>
+            <div class="col-span-2 text-right">Activity</div>
             <div class="col-span-1"></div>
         </div>
 

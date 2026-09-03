@@ -11,7 +11,7 @@
             @media print {
                 @page {
                     size: letter;
-                    margin: 0.5in;
+                    margin: 0.4in 0.45in;
                 }
 
                 body {
@@ -60,6 +60,10 @@
                 .grid {
                     break-inside: avoid;
                 }
+
+                details.report-section > :not(summary) {
+                    display: block !important;
+                }
             }
         </style>
     </head>
@@ -67,19 +71,22 @@
         <div class="min-h-screen bg-[linear-gradient(180deg,#ffffff_0%,#f7f8f5_52%,#ffffff_100%)]">
             <header class="border-b border-[#424143]/10 bg-white/90 backdrop-blur">
                 <div class="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-5 py-3 sm:px-6 lg:px-8">
-                    <a href="{{ route('home') }}" class="flex items-center gap-3 text-sm font-semibold tracking-normal text-[#424143]">
-                        <span class="flex size-9 items-center justify-center rounded-sm bg-[#424143] font-rsfla-heading text-sm font-bold text-white">
-                            <span class="text-[#8DC442]">R</span>S
-                        </span>
-                        <span class="font-rsfla-heading text-lg font-bold">RSFLA</span>
+                    <a href="{{ route('home') }}" class="flex shrink-0 items-center" aria-label="RSFLA home">
+                        <img src="{{ asset('images/rsfla-logo.png') }}" alt="RSFLA" class="h-9 w-auto object-contain sm:h-10">
                     </a>
 
                     @auth
                         @if (auth()->user()->hasRole('admin', 'staff'))
                             <nav class="print-hidden hidden items-center gap-1 rounded-md border border-[#424143]/10 bg-[#f7f8f5] p-1 text-sm text-[#424143]/70 lg:flex">
-                                @foreach (['Dashboard', 'Properties', 'Pipeline', 'Marketing', 'Reports', 'Documents', 'Team', 'Users', 'Settings'] as $item)
-                                    <a href="{{ $item === 'Dashboard' ? route('dashboard') : ($item === 'Pipeline' ? route('pipeline.index') : ($item === 'Properties' ? route('properties.index') : ($item === 'Documents' ? route('documents.index') : ($item === 'Team' ? route('team.index') : ($item === 'Marketing' ? route('marketing.index') : ($item === 'Reports' ? route('reports.index') : ($item === 'Users' ? route('users.index') : '#'))))))) }}" class="rounded px-3 py-1.5 transition hover:bg-white hover:text-[#424143] {{ request()->routeIs(strtolower($item).'.*') || ($item === 'Dashboard' && request()->routeIs('dashboard')) ? 'bg-white text-[#424143] shadow-sm ring-1 ring-[#424143]/5' : '' }}">
-                                        {{ $item }}
+                                @foreach ([
+                                    ['label' => 'Properties', 'route' => 'properties.index', 'active' => 'properties.*'],
+                                    ['label' => 'Leasing Activity', 'route' => 'pipeline.index', 'active' => 'pipeline.*'],
+                                    ['label' => 'Marketing Activity', 'route' => 'marketing.index', 'active' => 'marketing.*'],
+                                    ['label' => 'Documents', 'route' => 'documents.index', 'active' => 'documents.*'],
+                                    ['label' => 'Users', 'route' => 'users.index', 'active' => 'users.*'],
+                                ] as $item)
+                                    <a href="{{ route($item['route']) }}" class="rounded px-3 py-1.5 transition hover:bg-white hover:text-[#424143] {{ request()->routeIs($item['active']) ? 'bg-white text-[#424143] shadow-sm ring-1 ring-[#424143]/5' : '' }}">
+                                        {{ $item['label'] }}
                                     </a>
                                 @endforeach
                             </nav>

@@ -8,7 +8,7 @@
         <a href="{{ route('properties.index') }}" class="inline-flex h-10 items-center justify-center rounded-md border border-[#424143]/15 bg-white px-4 text-sm font-semibold text-[#424143] shadow-sm transition hover:border-[#8DC442]">Back to properties</a>
     </div>
 
-    <form method="POST" action="{{ route('properties.store') }}" class="max-w-5xl space-y-6 rounded-lg border border-[#424143]/10 bg-white p-6 shadow-sm">
+    <form method="POST" enctype="multipart/form-data" action="{{ route('properties.store') }}" class="max-w-5xl space-y-6 rounded-lg border border-[#424143]/10 bg-white p-6 shadow-sm">
         @csrf
         @include('properties._form')
         <div class="flex justify-end border-t border-[#424143]/10 pt-5">

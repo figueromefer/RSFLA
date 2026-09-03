@@ -16,3 +16,242 @@
         letter-spacing: 0;
     }
 }
+
+/* Cohesive property report composition */
+.report-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.report-upper {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.report-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+    .report-upper {
+        align-items: start;
+        grid-template-columns: minmax(0, 2fr) minmax(280px, 0.85fr);
+    }
+}
+
+@media print {
+    @page {
+        size: Letter portrait;
+        margin: 0.4in 0.45in;
+    }
+
+    html,
+    body {
+        font-size: 9pt !important;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .report-grid {
+        display: block !important;
+    }
+
+    .report-grid,
+    .report-grid > *,
+    .report-hero,
+    .report-summary,
+    .report-leasing,
+    .report-activity,
+    .report-documents,
+    .report-market,
+    .report-rent,
+    .print-card {
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+    }
+
+    .print-card {
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
+    .report-hero > :first-child {
+        height: 2px !important;
+    }
+
+    .report-hero > .grid {
+        padding: 0.08in 0 0.12in !important;
+    }
+
+    .report-hero h1 {
+        font-size: 24pt !important;
+        margin-top: 0.06in !important;
+    }
+
+    .report-hero .print\:block img {
+        height: 0.34in !important;
+    }
+
+    .report-summary {
+        border-top: 1px solid rgb(66 65 67 / 18%) !important;
+        margin-bottom: 0.14in;
+        padding-top: 0.11in !important;
+    }
+
+    .report-summary h2 {
+        font-size: 14pt !important;
+        margin-top: 0 !important;
+    }
+
+    .report-summary > div {
+        gap: 0.08in !important;
+    }
+
+    .report-summary a {
+        padding: 0.06in 0.09in !important;
+    }
+
+    .report-summary a > p:first-child {
+        font-size: 15pt !important;
+    }
+
+    .report-summary a > p:last-child {
+        font-size: 7.5pt !important;
+        margin-top: 0.02in !important;
+    }
+
+    .report-leasing,
+    .report-activity,
+    .report-documents,
+    .report-market,
+    .report-rent {
+        margin-top: 0.15in;
+    }
+
+    .report-grid h2 {
+        font-size: 14pt !important;
+        margin-bottom: 0.06in;
+    }
+
+    .report-leasing > div:first-child {
+        margin-bottom: 0.06in;
+    }
+
+    .report-leasing > div:last-child {
+        margin-top: 0.04in !important;
+    }
+
+    .report-leasing details {
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+    }
+
+    .report-leasing summary {
+        min-height: 0 !important;
+        padding: 0.06in 0.04in !important;
+        border-bottom: 1px solid rgb(66 65 67 / 10%);
+    }
+
+    .report-leasing summary .font-rsfla-heading {
+        font-size: 10pt !important;
+    }
+
+    .report-leasing summary span.flex .font-rsfla-heading {
+        font-size: 10pt !important;
+    }
+
+    .stage-description {
+        display: none !important;
+    }
+
+    .report-record,
+    .activity-item,
+    .document-item,
+    .rent-roll-row {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .report-record {
+        padding: 0.09in 0.04in !important;
+    }
+
+    .report-record p.text-lg {
+        font-size: 10pt !important;
+    }
+
+    .report-record dl {
+        margin-top: 0.06in !important;
+        gap: 0.12in !important;
+    }
+
+    .report-activity .mt-4,
+    .report-documents .mt-4,
+    .report-market .mt-4,
+    .report-rent .mt-3 {
+        margin-top: 0.06in !important;
+    }
+
+    .activity-item,
+    .document-item {
+        border: 0 !important;
+        border-bottom: 1px solid rgb(66 65 67 / 12%) !important;
+        border-radius: 0 !important;
+        padding: 0.07in 0 !important;
+    }
+
+    .activity-item time {
+        background: transparent !important;
+        padding: 0 !important;
+        text-align: left !important;
+        width: 0.8in !important;
+    }
+
+    .market-kpis {
+        gap: 0.12in !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        margin-top: 0.06in !important;
+    }
+
+    .market-kpis dd {
+        font-size: 14pt !important;
+    }
+
+    .market-notes {
+        margin-top: 0.08in !important;
+        padding-top: 0.06in !important;
+    }
+
+    .rent-roll-table {
+        font-size: 7pt;
+        min-width: 0 !important;
+        table-layout: fixed;
+    }
+
+    .rent-roll-table thead {
+        display: table-header-group;
+    }
+
+    .rent-roll-table th {
+        background: #f2f4ef !important;
+        border-bottom: 1px solid rgb(66 65 67 / 20%);
+        font-size: 6.5pt;
+        line-height: 1.15;
+        padding: 0.04in 0.025in;
+        text-transform: uppercase;
+        white-space: normal !important;
+    }
+
+    .rent-roll-table td {
+        border-bottom: 1px solid rgb(66 65 67 / 10%);
+        line-height: 1.2;
+        padding: 0.04in 0.025in;
+        overflow-wrap: anywhere;
+        white-space: normal !important;
+    }
+}

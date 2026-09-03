@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Property extends Model
 {
@@ -22,6 +24,12 @@ class Property extends Model
         'city',
         'state',
         'hero_image',
+        'property_information',
+        'market_rba',
+        'market_vacancy',
+        'market_sublet_percentage',
+        'market_ytd_absorption',
+        'market_notes',
         'report_title',
         'postal_code',
         'property_type',
@@ -82,9 +90,44 @@ class Property extends Model
         return $this->hasMany(PropertyLink::class)->orderBy('sort_order');
     }
 
+    public function rentRollEntries(): HasMany
+    {
+        return $this->hasMany(RentRollEntry::class)
+            ->orderBy('is_vacant')
+            ->orderBy('sort_order')
+            ->orderBy('suite');
+    }
+    public function marketDataEntries(): HasMany
+    {
+        return $this->hasMany(PropertyMarketData::class)
+            ->orderBy('sort_order')
+            ->orderByDesc('report_date')
+            ->orderBy('title');
+    }
+
+
     public function visibleLinks(): HasMany
     {
         return $this->links()->visibleToClient();
+    }
+
+    public function getPropertyPhotoUrlAttribute(): ?string
+    {
+        if (! $this->hero_image) {
+            return null;
+        }
+
+        if (Str::startsWith($this->hero_image, ['http://', 'https://', '/storage/'])) {
+            return $this->hero_image;
+        }
+
+        return Storage::disk('public')->url($this->hero_image);
+    }
+
+    public function hasLocalPropertyPhoto(): bool
+    {
+        return filled($this->hero_image)
+            && ! Str::startsWith($this->hero_image, ['http://', 'https://', '/storage/']);
     }
 
     public function getRouteKeyName(): string

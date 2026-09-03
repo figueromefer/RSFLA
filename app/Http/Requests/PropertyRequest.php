@@ -44,8 +44,14 @@ class PropertyRequest extends FormRequest
             'address' => ['nullable', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:120'],
             'state' => ['required', 'string', 'size:2'],
-            'hero_image' => ['nullable', 'url', 'max:2048'],
+            'property_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'property_information' => ['nullable', 'string'],
             'report_title' => ['nullable', 'string', 'max:180'],
+            'market_rba' => ['nullable', 'string', 'max:255'],
+            'market_vacancy' => ['nullable', 'string', 'max:255'],
+            'market_sublet_percentage' => ['nullable', 'string', 'max:255'],
+            'market_ytd_absorption' => ['nullable', 'string', 'max:255'],
+            'market_notes' => ['nullable', 'string'],
             'is_active' => ['nullable', 'boolean'],
             'team_member_ids' => ['nullable', 'array'],
             'team_member_ids.*' => ['integer', 'exists:team_members,id'],
@@ -67,6 +73,7 @@ class PropertyRequest extends FormRequest
         $data['is_active'] = $this->boolean('is_active');
         $data['status'] = $data['is_active'] ? 'active' : 'inactive';
         unset($data['team_member_ids']);
+        unset($data['property_photo']);
 
         return $data;
     }

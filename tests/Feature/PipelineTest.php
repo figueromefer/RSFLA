@@ -65,14 +65,8 @@ class PipelineTest extends TestCase
             'timing' => 'Q3',
             'rsf' => 2500,
             'broker' => 'Test Broker',
-            'company' => 'Private Test Company',
-            'contact_name' => 'Taylor Contact',
-            'email' => 'tenant@example.com',
-            'phone' => '555-0100',
             'public_notes' => 'Client-facing update.',
-            'notes' => 'New opportunity.',
             'visible_to_client' => '1',
-            'sort_order' => 1,
         ]);
 
         $prospect = Prospect::first();
@@ -85,9 +79,7 @@ class PipelineTest extends TestCase
         ]);
         $prospect->refresh();
         $this->assertSame('2026-07-15', $prospect->opportunity_date->format('Y-m-d'));
-        $this->assertSame('Private Test Company', $prospect->company);
         $this->assertSame('Client-facing update.', $prospect->public_notes);
-        $this->assertSame('New opportunity.', $prospect->notes);
     }
 
     public function test_hidden_prospect_is_not_counted_in_client_report(): void
@@ -143,7 +135,7 @@ class PipelineTest extends TestCase
         $response->assertSee('Visible Tenant');
         $response->assertDontSee('Hidden Tenant');
         $response->assertDontSee('Hidden tenant added');
-        $response->assertSee('0 signed leases');
+        $this->assertSame(0, $response->viewData('metrics')['leases']);
     }
 
     public function test_client_cannot_access_another_clients_property_report(): void
@@ -179,6 +171,12 @@ class PipelineTest extends TestCase
             'first_name' => 'Test Tenant',
             'tenant' => 'Test Tenant',
             'status' => Prospect::STATUS_LEAD,
+            'company' => 'Preserved Private Company',
+            'contact_name' => 'Preserved Contact',
+            'email' => 'preserved@example.com',
+            'phone' => '555-0100',
+            'notes' => 'Preserved private note.',
+            'sort_order' => 7,
             'is_active' => true,
         ]);
 
@@ -192,14 +190,8 @@ class PipelineTest extends TestCase
             'timing' => 'Q3',
             'rsf' => 2500,
             'broker' => 'Test Broker',
-            'company' => 'Updated Private Company',
-            'contact_name' => 'Taylor Contact',
-            'email' => 'tenant@example.com',
-            'phone' => '555-0100',
             'public_notes' => 'Updated public note.',
-            'notes' => 'Moved forward.',
             'visible_to_client' => '1',
-            'sort_order' => 1,
         ])->assertRedirect(route('pipeline.edit', $prospect));
 
         $this->assertDatabaseHas('prospect_activities', [
@@ -210,11 +202,14 @@ class PipelineTest extends TestCase
         ]);
         $prospect->refresh();
         $this->assertSame('2026-08-01', $prospect->opportunity_date->format('Y-m-d'));
-        $this->assertSame('Updated Private Company', $prospect->company);
+        $this->assertSame('Preserved Private Company', $prospect->company);
+        $this->assertSame('Preserved Contact', $prospect->contact_name);
+        $this->assertSame('Preserved private note.', $prospect->notes);
+        $this->assertSame(7, $prospect->sort_order);
         $this->assertSame('Updated public note.', $prospect->public_notes);
     }
 
-    public function test_internal_pipeline_shows_company_contact_and_private_notes(): void
+    public function test_leasing_activity_hides_private_contact_information(): void
     {
         $admin = User::factory()->create([
             'role' => User::ROLE_ADMIN,
@@ -245,11 +240,27 @@ class PipelineTest extends TestCase
             ->get(route('pipeline.index'))
             ->assertOk()
             ->assertSee('07-15-2026')
-            ->assertSee('Internal Company LLC')
-            ->assertSee('Private Contact')
-            ->assertSee('private-contact@example.com')
-            ->assertSee('555-0199')
             ->assertSee('Public pipeline note.')
-            ->assertSee('Private pipeline note.');
+            ->assertDontSee('Internal Company LLC')
+            ->assertDontSee('Private Contact')
+            ->assertDontSee('private-contact@example.com')
+            ->assertDontSee('555-0199')
+            ->assertDontSee('Private pipeline note.');
+    }
+
+    public function test_normal_leasing_activity_form_only_contains_report_fields(): void
+    {
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+        $this->actingAs($admin)->get(route('pipeline.create'))
+            ->assertOk()
+            ->assertSee('Leasing Activity')
+            ->assertSee('name="public_notes"', false)
+            ->assertSee('Show in client report')
+            ->assertDontSee('name="company"', false)
+            ->assertDontSee('name="contact_name"', false)
+            ->assertDontSee('name="email"', false)
+            ->assertDontSee('name="phone"', false)
+            ->assertDontSee('name="notes"', false)
+            ->assertDontSee('name="sort_order"', false);
     }
 }

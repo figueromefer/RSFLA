@@ -7,6 +7,7 @@ use App\Models\Property;
 use App\Models\Prospect;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class ReportsTest extends TestCase
@@ -64,7 +65,7 @@ class ReportsTest extends TestCase
         $response->assertOk();
         $response->assertSee('Utah Campus');
         $response->assertSee('Visible Prospects');
-        $response->assertSee('Marketing');
+        $response->assertSee('Activity');
         $response->assertSee('View Report');
     }
 
@@ -123,7 +124,7 @@ class ReportsTest extends TestCase
             ->assertSee('Print / Export');
     }
 
-    public function test_client_report_shows_executive_summary(): void
+    public function test_client_report_does_not_show_executive_summary(): void
     {
         $client = User::factory()->create([
             'role' => User::ROLE_CLIENT,
@@ -134,8 +135,8 @@ class ReportsTest extends TestCase
         $this->actingAs($client)
             ->get(route('client.properties.show', $property))
             ->assertOk()
-            ->assertSee('Executive Summary')
-            ->assertSee('Current leasing position');
+            ->assertDontSee('Executive Summary')
+            ->assertDontSee('Current leasing position');
     }
 
     public function test_client_report_groups_pipeline_by_status(): void
@@ -174,21 +175,22 @@ class ReportsTest extends TestCase
         $this->actingAs($client)
             ->get(route('client.properties.show', $property))
             ->assertOk()
-            ->assertSee('Pipeline Detail')
+            ->assertSee('Leasing Activity')
             ->assertSeeInOrder([
-                'Lease',
+                'Current Active Prospects',
+                'Active Tenant',
+                'Leases',
                 'Lease Tenant',
                 'Proposals',
                 'Proposal Tenant',
                 'Tours',
                 'Tour Tenant',
-                'Active Prospects',
-                'Active Tenant',
-                'New Leads',
+                'Inquiries',
                 'Lead Tenant',
-                'Inactive',
-                'Inactive Tenant',
-            ]);
+            ])
+            ->assertDontSee('>Prospects<', false)
+            ->assertDontSee('>Inquiry<', false)
+            ->assertDontSee('Inactive Tenant');
     }
 
     public function test_client_report_shows_public_prospect_fields_and_hides_private_fields(): void
@@ -211,7 +213,7 @@ class ReportsTest extends TestCase
         ]);
 
         $this->actingAs($client)
-            ->get(route('client.properties.show', $property))
+            ->get(route('client.properties.show', $property, false).'?range=all')
             ->assertOk()
             ->assertSee('Visible Client Tenant')
             ->assertSee('07-15-2026')
@@ -235,11 +237,7 @@ class ReportsTest extends TestCase
         $this->actingAs($client)
             ->get(route('client.properties.show', $property))
             ->assertOk()
-            ->assertSee('href="#pipeline-active-prospects"', false)
-            ->assertSee('href="#pipeline-tours"', false)
-            ->assertSee('href="#pipeline-proposals"', false)
-            ->assertSee('href="#marketing-activity"', false)
-            ->assertSee('id="pipeline-active-prospects"', false)
+            ->assertSee('id="pipeline-prospects"', false)
             ->assertSee('id="pipeline-tours"', false)
             ->assertSee('id="pipeline-proposals"', false)
             ->assertSee('id="marketing-activity"', false);
@@ -257,15 +255,14 @@ class ReportsTest extends TestCase
             ->get(route('client.properties.show', $property));
 
         $response->assertOk()
-            ->assertSee('<details id="pipeline-lease"', false)
+            ->assertSee('<details id="pipeline-leases"', false)
             ->assertSee('<details id="pipeline-proposals"', false)
             ->assertSee('<details id="pipeline-tours"', false)
-            ->assertSee('<details id="pipeline-active-prospects"', false)
-            ->assertSee('<details id="pipeline-new-leads"', false)
-            ->assertSee('<details id="pipeline-inactive"', false)
+            ->assertSee('<details id="pipeline-prospects"', false)
+            ->assertSee('<details id="pipeline-inquiry"', false)
             ->assertSee('<summary', false)
-            ->assertSee('Click to expand or close')
-            ->assertSee('No client-visible prospects in this stage.');
+            ->assertSee('Active prospects currently being tracked')
+            ->assertSee('No activity in this stage.');
     }
 
     public function test_internal_prospects_do_not_appear_on_client_report(): void
@@ -302,9 +299,142 @@ class ReportsTest extends TestCase
         $this->actingAs($staff)
             ->get(route('reports.show', $property))
             ->assertOk()
-            ->assertSee('Executive Summary')
-            ->assertSee('Pipeline Detail')
-            ->assertSee('Monthly Activity');
+            ->assertDontSee('Executive Summary')
+            ->assertSee('Leasing Activity')
+            ->assertSee('Marketing Activity');
+    }
+
+    public function test_last_15_days_is_default_and_counts_match_detail_records(): void
+    {
+        $this->travelTo(Carbon::parse('2026-08-10 12:00:00'));
+        $client = User::factory()->create(['role' => User::ROLE_CLIENT]);
+        $property = $this->property();
+        $property->clients()->attach($client->id);
+
+        $this->prospect($property, [
+            'tenant' => 'Recent Tour',
+            'status' => Prospect::STATUS_TOUR_SCHEDULED,
+            'opportunity_date' => now()->subDays(5)->toDateString(),
+        ]);
+        $this->prospect($property, [
+            'tenant' => 'Older Tour',
+            'status' => Prospect::STATUS_TOUR_COMPLETED,
+            'opportunity_date' => now()->subDays(20)->toDateString(),
+        ]);
+
+        $response = $this->actingAs($client)->get(route('client.properties.show', $property));
+
+        $response->assertOk()
+            ->assertSee('Last 15 Days')
+            ->assertSee('All Time')
+            ->assertSee('Recent Tour')
+            ->assertDontSee('Older Tour');
+        $this->assertSame('15', $response->viewData('range'));
+        $this->assertSame(1, $response->viewData('metrics')['tours']);
+        $this->assertSame(['Recent Tour'], $response->viewData('reportProspects')->pluck('tenant')->all());
+    }
+
+    public function test_all_time_includes_older_records_on_client_and_internal_reports(): void
+    {
+        $this->travelTo(Carbon::parse('2026-08-10 12:00:00'));
+        $client = User::factory()->create(['role' => User::ROLE_CLIENT]);
+        $staff = User::factory()->create(['role' => User::ROLE_STAFF]);
+        $property = $this->property();
+        $property->clients()->attach($client->id);
+        $this->prospect($property, [
+            'tenant' => 'Older Inquiry',
+            'opportunity_date' => now()->subDays(30)->toDateString(),
+        ]);
+
+        $clientResponse = $this->actingAs($client)->get(route('client.properties.show', $property, false).'?range=all');
+        $clientResponse->assertOk()->assertSee('Older Inquiry');
+        $this->assertSame('all', $clientResponse->viewData('range'));
+
+        $this->actingAs($staff)
+            ->get(route('reports.show', $property, false).'?range=all')
+            ->assertOk()
+            ->assertSee('Older Inquiry');
+    }
+
+    public function test_opportunity_date_takes_precedence_over_recent_created_at(): void
+    {
+        $this->travelTo(Carbon::parse('2026-08-10 12:00:00'));
+        $client = User::factory()->create(['role' => User::ROLE_CLIENT]);
+        $property = $this->property();
+        $property->clients()->attach($client->id);
+        $this->prospect($property, [
+            'tenant' => 'Old Opportunity Recent Record',
+            'opportunity_date' => now()->subDays(30)->toDateString(),
+        ]);
+
+        $this->actingAs($client)
+            ->get(route('client.properties.show', $property))
+            ->assertOk()
+            ->assertDontSee('Old Opportunity Recent Record');
+    }
+
+    public function test_created_at_is_fallback_when_opportunity_date_is_null(): void
+    {
+        $this->travelTo(Carbon::parse('2026-08-10 12:00:00'));
+        $client = User::factory()->create(['role' => User::ROLE_CLIENT]);
+        $property = $this->property();
+        $property->clients()->attach($client->id);
+        $recent = $this->prospect($property, ['tenant' => 'Recent Legacy Prospect', 'opportunity_date' => null]);
+        $old = $this->prospect($property, ['tenant' => 'Old Legacy Prospect', 'opportunity_date' => null]);
+        $old->forceFill(['created_at' => now()->subDays(30), 'updated_at' => now()->subDays(30)])->save();
+
+        $response = $this->actingAs($client)->get(route('client.properties.show', $property));
+
+        $response->assertOk()->assertSee($recent->tenant)->assertDontSee($old->tenant);
+    }
+
+
+    public function test_property_information_displays_with_line_breaks_and_report_sections_remain(): void
+    {
+        $client = User::factory()->create(['role' => User::ROLE_CLIENT]);
+        $property = $this->property([
+            'property_information' => "First information line\nSecond information line",
+        ]);
+        $property->clients()->attach($client->id);
+
+        $this->actingAs($client)
+            ->get(route('client.properties.show', $property))
+            ->assertOk()
+            ->assertSee('Property Information')
+            ->assertSee("First information line\nSecond information line")
+            ->assertSee('whitespace-pre-line', false)
+            ->assertSee('Marketing Activity')
+            ->assertSee('Market Data')
+            ->assertSee('Rent Roll')
+            ->assertDontSee('Executive Summary')
+            ->assertDontSee('Current leasing position');
+    }
+
+    public function test_empty_property_information_has_subtle_empty_state(): void
+    {
+        $client = User::factory()->create(['role' => User::ROLE_CLIENT]);
+        $property = $this->property();
+        $property->clients()->attach($client->id);
+
+        $this->actingAs($client)
+            ->get(route('client.properties.show', $property))
+            ->assertOk()
+            ->assertSee('No property information available.');
+    }
+    public function test_leasing_activity_uses_approved_subtitles(): void
+    {
+        $client = User::factory()->create(['role' => User::ROLE_CLIENT]);
+        $property = $this->property();
+        $property->clients()->attach($client->id);
+
+        $this->actingAs($client)->get(route('client.properties.show', $property))
+            ->assertOk()
+            ->assertSee('Leases in negotiation')
+            ->assertSee('Proposals in negotiations')
+            ->assertSee('New opportunities')
+            ->assertDontSee('Signed leases')
+            ->assertDontSee('Proposals currently in progress')
+            ->assertDontSee('New opportunities received');
     }
 
     private function property(array $overrides = []): Property

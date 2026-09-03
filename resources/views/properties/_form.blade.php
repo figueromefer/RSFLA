@@ -11,19 +11,12 @@
 
 <div class="grid gap-5 lg:grid-cols-2">
     <div class="lg:col-span-2">
-        <h2 class="font-rsfla-heading text-xl font-bold text-[#424143]">Property Profile</h2>
-        <p class="mt-1 text-sm text-[#424143]/60">Core identity and report presentation for this property.</p>
+        <h2 class="font-rsfla-heading text-xl font-bold uppercase tracking-wide text-[#424143]">Property</h2>
     </div>
 
     <div>
-        <label for="name" class="text-sm font-semibold text-[#424143]">Name</label>
+        <label for="name" class="text-sm font-semibold text-[#424143]">Property Name</label>
         <input id="name" name="name" value="{{ old('name', $property->name) }}" required class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
-    </div>
-
-    <div>
-        <label for="slug" class="text-sm font-semibold text-[#424143]">Slug</label>
-        <input id="slug" name="slug" value="{{ old('slug', $property->slug) }}" placeholder="Auto-generated if blank" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
-        <p class="mt-1 text-xs text-[#424143]/55">Used in report URLs. Leave blank when creating to generate from name.</p>
     </div>
 
     <div>
@@ -44,36 +37,60 @@
     </div>
 
     <div>
-        <label for="hero_image" class="text-sm font-semibold text-[#424143]">Hero image URL</label>
-        <input id="hero_image" name="hero_image" type="url" value="{{ old('hero_image', $property->hero_image) }}" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
+        <label for="property_photo" class="text-sm font-semibold text-[#424143]">Property Photo</label>
+        @if ($property->property_photo_url)
+            <img src="{{ $property->property_photo_url }}" alt="Current photo for {{ $property->name }}" class="mt-2 h-40 w-full rounded-md border border-[#424143]/10 object-cover">
+        @endif
+        <input id="property_photo" name="property_photo" type="file" accept="image/jpeg,image/png,image/webp" class="mt-2 block w-full rounded-md border border-[#424143]/20 bg-white px-3 py-2 text-sm text-[#424143] file:mr-3 file:rounded-md file:border-0 file:bg-[#f7f8f5] file:px-3 file:py-2 file:text-sm file:font-semibold file:text-[#424143] hover:file:bg-[#eef3e8]">
+        <p class="mt-1 text-xs text-[#424143]/55">JPG, PNG, or WEBP. Maximum 5 MB. Uploading a new photo replaces the current local photo.</p>
     </div>
 
-    <div>
-        <label for="report_title" class="text-sm font-semibold text-[#424143]">Report title</label>
-        <input id="report_title" name="report_title" value="{{ old('report_title', $property->report_title) }}" placeholder="{{ $property->name ?: 'Owner Report' }}" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
-    </div>
 </div>
+
+<section class="border-t border-[#424143]/10 pt-5">
+    <h2 class="font-rsfla-heading text-xl font-bold uppercase tracking-wide text-[#424143]">Property Information</h2>
+    <textarea id="property_information" name="property_information" rows="7" class="mt-4 w-full rounded-md border border-[#424143]/20 bg-white px-3 py-2 text-sm leading-6 outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">{{ old('property_information', $property->property_information) }}</textarea>
+    <p class="mt-1 text-xs text-[#424143]/55">General property information shown in the client report.</p>
+</section>
+
+<section id="market-data" class="border-t border-[#424143]/10 pt-5">
+    <h2 class="font-rsfla-heading text-xl font-bold uppercase tracking-wide text-[#424143]">Market Data</h2>
+    <div class="mt-4 grid gap-5 sm:grid-cols-2">
+        <div>
+            <label for="market_rba" class="text-sm font-semibold text-[#424143]">RBA</label>
+            <input id="market_rba" name="market_rba" value="{{ old('market_rba', $property->market_rba) }}" placeholder="$5.73" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
+        </div>
+        <div>
+            <label for="market_vacancy" class="text-sm font-semibold text-[#424143]">Vacancy</label>
+            <input id="market_vacancy" name="market_vacancy" value="{{ old('market_vacancy', $property->market_vacancy) }}" placeholder="15.7%" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
+        </div>
+        <div>
+            <label for="market_sublet_percentage" class="text-sm font-semibold text-[#424143]">Sublet %</label>
+            <input id="market_sublet_percentage" name="market_sublet_percentage" value="{{ old('market_sublet_percentage', $property->market_sublet_percentage) }}" placeholder="8.4%" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
+        </div>
+        <div>
+            <label for="market_ytd_absorption" class="text-sm font-semibold text-[#424143]">YTD Absorption</label>
+            <input id="market_ytd_absorption" name="market_ytd_absorption" value="{{ old('market_ytd_absorption', $property->market_ytd_absorption) }}" placeholder="(285K)" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 text-sm outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
+        </div>
+        <div class="sm:col-span-2">
+            <label for="market_notes" class="text-sm font-semibold text-[#424143]">Market Data Subtitle</label>
+            <input id="market_notes" name="market_notes" type="text" value="{{ old('market_notes', $property->market_notes) }}" class="mt-2 h-11 w-full rounded-md border border-[#424143]/20 bg-white px-3 py-2 text-sm leading-6 outline-none focus:border-[#8DC442] focus:ring-2 focus:ring-[#8DC442]/20">
+            <p class="mt-1 text-xs text-[#424143]/55">Short subtitle displayed below Market Data in the client report.</p>
+        </div>
+    </div>
+</section>
+
+@if ($property->exists)
+    @include('properties._rent-roll', ['manageRentRoll' => true])
+@endif
 
 <div class="border-t border-[#424143]/10 pt-5">
-    <h2 class="font-rsfla-heading text-xl font-bold text-[#424143]">Assigned Team</h2>
-    <p class="mt-1 text-sm text-[#424143]/60">These team members appear on the property workspace and client report when active.</p>
-    <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        @foreach ($teamMembers as $teamMember)
-            <label class="flex items-start gap-3 rounded-lg border border-[#424143]/10 bg-white p-3 text-sm text-[#424143] transition hover:border-[#8DC442]">
-                <input name="team_member_ids[]" type="checkbox" value="{{ $teamMember->id }}" @checked(in_array($teamMember->id, old('team_member_ids', $property->exists ? $property->teamMembers->pluck('id')->all() : []), true)) class="mt-0.5 size-4 rounded border-[#424143]/20 accent-[#8DC442]">
-                <span class="min-w-0">
-                    <span class="block truncate font-semibold">{{ $teamMember->name }}</span>
-                    <span class="block truncate text-xs text-[#424143]/55">{{ $teamMember->email ?: 'No email' }}{{ $teamMember->is_active ? '' : ' · inactive' }}</span>
-                </span>
-            </label>
-        @endforeach
-    </div>
+    <h2 class="font-rsfla-heading text-sm font-bold uppercase tracking-wide text-[#424143]/65">Status</h2>
+    <label class="mt-3 flex items-start gap-3 text-sm font-medium text-[#424143]">
+        <input name="is_active" type="checkbox" value="1" @checked(old('is_active', $property->is_active ?? true)) class="mt-0.5 size-4 rounded border-[#424143]/20 accent-[#8DC442]">
+        <span>
+            <span class="block font-semibold">Active property</span>
+            <span class="mt-1 block font-normal text-[#424143]/60">Inactive properties remain available internally but are hidden from client report access.</span>
+        </span>
+    </label>
 </div>
-
-<label class="flex items-start gap-3 rounded-lg border border-[#424143]/10 bg-[#f7f8f5] p-4 text-sm font-medium text-[#424143]">
-    <input name="is_active" type="checkbox" value="1" @checked(old('is_active', $property->is_active ?? true)) class="mt-0.5 size-4 rounded border-[#424143]/20 accent-[#8DC442]">
-    <span>
-        <span class="block font-semibold">Active property</span>
-        <span class="mt-1 block font-normal text-[#424143]/60">Inactive properties remain available internally but are hidden from client report access.</span>
-    </span>
-</label>

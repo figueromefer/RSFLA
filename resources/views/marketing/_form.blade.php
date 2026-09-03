@@ -17,7 +17,7 @@
 <div class="grid gap-5 lg:grid-cols-2">
     <div class="lg:col-span-2">
         <h2 class="font-rsfla-heading text-xl font-bold text-[#424143]">Marketing Activity</h2>
-        <p class="mt-1 text-sm text-[#424143]/60">Track campaigns, outreach, listing updates, and client-visible activity.</p>
+        <p class="mt-1 text-sm text-[#424143]/60">Information displayed in the client report.</p>
     </div>
 
     <div>
@@ -70,10 +70,4 @@
     </div>
 </div>
 
-<label class="flex items-start gap-3 rounded-lg border border-[#424143]/10 bg-[#f7f8f5] p-4 text-sm font-medium text-[#424143]">
-    <input name="visible_to_client" type="checkbox" value="1" @checked(old('visible_to_client', $marketingActivity->visible_to_client ?? true)) class="mt-0.5 size-4 rounded border-[#424143]/20 accent-[#8DC442]">
-    <span>
-        <span class="block font-semibold">Visible to client report</span>
-        <span class="mt-1 block font-normal text-[#424143]/60">Internal marketing notes remain hidden from client-facing reports.</span>
-    </span>
-</label>
+<input name="visible_to_client" type="hidden" value="{{ old('visible_to_client', isset($marketingActivity->visible_to_client) ? (int) $marketingActivity->visible_to_client : 1) }}">

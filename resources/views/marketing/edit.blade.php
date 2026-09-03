@@ -22,7 +22,7 @@
         </div>
     </form>
 
-    <form id="delete-marketing-activity-{{ $marketingActivity->id }}" method="POST" action="{{ route('marketing.destroy', $marketingActivity) }}" onsubmit="return confirm('Delete this marketing activity?');">
+    <form id="delete-marketing-activity-{{ $marketingActivity->id }}" method="POST" action="{{ route('marketing.destroy', $marketingActivity) }}" onsubmit="return confirm('Delete this activity?');">
         @csrf
         @method('DELETE')
     </form>

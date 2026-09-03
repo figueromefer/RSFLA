@@ -104,7 +104,7 @@ class TeamTest extends TestCase
         ]);
     }
 
-    public function test_client_report_shows_assigned_active_team_members(): void
+    public function test_client_report_hides_assigned_team_members(): void
     {
         $client = User::factory()->create([
             'role' => User::ROLE_CLIENT,
@@ -125,7 +125,7 @@ class TeamTest extends TestCase
             ->get(route('client.properties.show', $property));
 
         $response->assertOk();
-        $response->assertSee('Active Advisor');
+        $response->assertDontSee('Active Advisor');
         $response->assertDontSee('Inactive Advisor');
     }
 

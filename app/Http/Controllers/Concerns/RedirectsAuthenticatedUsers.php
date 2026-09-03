@@ -9,7 +9,7 @@ trait RedirectsAuthenticatedUsers
     protected function redirectPathFor(User $user): string
     {
         if (! $user->isClient()) {
-            return route('dashboard');
+            return route('properties.index');
         }
 
         if ($user->properties()->count() === 1) {

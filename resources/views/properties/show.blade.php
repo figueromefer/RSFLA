@@ -31,7 +31,7 @@
                 </div>
             </div>
             <nav class="flex gap-1 overflow-x-auto border-t border-[#424143]/10 bg-[#f7f8f5] px-4 py-2 text-sm font-semibold text-[#424143]/70">
-                @foreach (['overview' => 'Overview', 'pipeline' => 'Pipeline', 'marketing' => 'Marketing', 'documents' => 'Documents', 'team' => 'Team', 'activity' => 'Activity', 'report' => 'Report'] as $anchor => $label)
+                @foreach (['overview' => 'Overview', 'market-data' => 'Market Data', 'rent-roll' => 'Rent Roll', 'pipeline' => 'Pipeline', 'marketing' => 'Marketing', 'documents' => 'Documents', 'team' => 'Team', 'activity' => 'Activity', 'report' => 'Report'] as $anchor => $label)
                     <a href="#{{ $anchor }}" class="rounded px-3 py-2 transition hover:bg-white hover:text-[#424143]">{{ $label }}</a>
                 @endforeach
             </nav>
@@ -62,6 +62,10 @@
                 @endforeach
             </div>
         </section>
+
+        @include('client._market-data')
+
+        @include("properties._rent-roll")
 
         <section id="pipeline" class="rounded-lg border border-[#424143]/10 bg-white p-6 shadow-sm">
             <div class="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -118,10 +122,10 @@
         <section id="marketing" class="rounded-lg border border-[#424143]/10 bg-white p-6 shadow-sm">
             <div class="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h2 class="font-rsfla-heading text-2xl font-bold text-[#424143]">Marketing</h2>
+                    <h2 class="font-rsfla-heading text-2xl font-bold text-[#424143]">Activity</h2>
                     <p class="mt-1 text-sm text-[#424143]/65">Recent marketing activity and client-visible campaign updates.</p>
                 </div>
-                <a href="{{ route('marketing.index', ['property_id' => $property->id]) }}" class="inline-flex h-10 items-center justify-center rounded-md bg-[#8DC442] px-4 text-sm font-semibold text-[#243018] shadow-sm transition hover:bg-[#7ab336]">Manage Marketing</a>
+                <a href="{{ route('marketing.index', ['property_id' => $property->id]) }}" class="inline-flex h-10 items-center justify-center rounded-md bg-[#8DC442] px-4 text-sm font-semibold text-[#243018] shadow-sm transition hover:bg-[#7ab336]">Manage Activity</a>
             </div>
             <div class="mt-5 grid gap-3 sm:grid-cols-3">
                 <div class="rounded-md bg-[#f7f8f5] p-4">

@@ -93,6 +93,24 @@ class UsersTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_admin_and_staff_login_redirects_to_properties(): void
+    {
+        foreach ([User::ROLE_ADMIN, User::ROLE_STAFF] as $role) {
+            $user = User::factory()->create([
+                'email' => "{$role}@example.com",
+                'role' => $role,
+                'password' => Hash::make('password'),
+            ]);
+
+            $this->post(route('login.store'), [
+                'email' => $user->email,
+                'password' => 'password',
+            ])->assertRedirect(route('properties.index'));
+
+            auth()->logout();
+        }
+    }
+
     public function test_inactive_user_cannot_login(): void
     {
         User::factory()->create([

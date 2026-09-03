@@ -8,7 +8,11 @@ use App\Models\Prospect;
 use App\Models\PropertyLink;
 use App\Models\TeamMember;
 use Illuminate\Http\RedirectResponse;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Throwable;
 
 class PropertyController extends Controller
 {
@@ -43,6 +47,8 @@ class PropertyController extends Controller
     {
         $property->load([
             'links',
+            'rentRollEntries',
+            'marketDataEntries',
             'teamMembers',
             'marketingActivities' => fn ($query) => $query
                 ->with('user')
@@ -90,10 +96,25 @@ class PropertyController extends Controller
 
     public function store(PropertyRequest $request): RedirectResponse
     {
-        $property = new Property($request->propertyData());
-        $property->syncStatusFromActiveFlag();
-        $property->save();
-        $property->teamMembers()->sync($request->teamMemberIds());
+        $photoPath = $request->file('property_photo')?->store('properties', 'public');
+
+        try {
+            DB::transaction(function () use ($request, $photoPath): void {
+                $property = new Property($request->propertyData());
+                $property->hero_image = $photoPath;
+                $property->syncStatusFromActiveFlag();
+                $property->save();
+                if ($request->has('team_member_ids')) {
+                    $property->teamMembers()->sync($request->teamMemberIds());
+                }
+            });
+        } catch (Throwable $exception) {
+            if ($photoPath) {
+                Storage::disk('public')->delete($photoPath);
+            }
+
+            throw $exception;
+        }
 
         return redirect()
             ->route('properties.index')
@@ -102,6 +123,7 @@ class PropertyController extends Controller
 
     public function edit(Property $property): View
     {
+        $property->load(['marketDataEntries', 'rentRollEntries']);
         return view('properties.edit', [
             'property' => $property,
             'teamMembers' => TeamMember::orderByDesc('is_active')->orderBy('name')->get(),
@@ -110,10 +132,35 @@ class PropertyController extends Controller
 
     public function update(PropertyRequest $request, Property $property): RedirectResponse
     {
-        $property->fill($request->propertyData());
-        $property->syncStatusFromActiveFlag();
-        $property->save();
-        $property->teamMembers()->sync($request->teamMemberIds());
+        $previousPhoto = $property->hero_image;
+        $previousPhotoIsLocal = $property->hasLocalPropertyPhoto();
+        $photoPath = $request->file('property_photo')?->store('properties', 'public');
+
+        try {
+            DB::transaction(function () use ($request, $property, $photoPath): void {
+                $property->fill($request->propertyData());
+
+                if ($photoPath) {
+                    $property->hero_image = $photoPath;
+                }
+
+                $property->syncStatusFromActiveFlag();
+                $property->save();
+                if ($request->has('team_member_ids')) {
+                    $property->teamMembers()->sync($request->teamMemberIds());
+                }
+            });
+        } catch (Throwable $exception) {
+            if ($photoPath) {
+                Storage::disk('public')->delete($photoPath);
+            }
+
+            throw $exception;
+        }
+
+        if ($photoPath && $previousPhotoIsLocal && $previousPhoto !== $photoPath) {
+            Storage::disk('public')->delete($previousPhoto);
+        }
 
         return redirect()
             ->route('properties.edit', $property)

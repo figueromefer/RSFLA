@@ -74,7 +74,7 @@ class MarketingTest extends TestCase
         $this->actingAs($admin)
             ->put(route('marketing.update', $activity), [
                 'property_id' => $activity->property_id,
-                'type' => MarketingActivity::TYPE_CAMPAIGN,
+                'type' => MarketingActivity::TYPE_DIRECT_MARKETING,
                 'title' => 'Updated campaign',
                 'description' => 'Updated description.',
                 'activity_date' => '2026-06-26',
@@ -126,6 +126,12 @@ class MarketingTest extends TestCase
             'title' => 'Internal campaign',
             'visible_to_client' => false,
         ]);
+        $this->marketingActivity([
+            'property_id' => $property->id,
+            'type' => MarketingActivity::TYPE_CAMPAIGN,
+            'title' => 'Legacy visible campaign',
+            'visible_to_client' => true,
+        ]);
 
         $response = $this->actingAs($client)
             ->get(route('client.properties.show', $property));
@@ -133,6 +139,21 @@ class MarketingTest extends TestCase
         $response->assertOk();
         $response->assertSee('Visible campaign');
         $response->assertDontSee('Internal campaign');
+        $response->assertDontSee('Legacy visible campaign');
+    }
+
+    public function test_activity_form_only_offers_supported_types(): void
+    {
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+
+        $response = $this->actingAs($admin)->get(route('marketing.create'));
+
+        $response->assertOk()
+            ->assertSee('Broadcast Email')
+            ->assertSee('Direct Marketing')
+            ->assertSee('Direct Email')
+            ->assertDontSee('Campaign')
+            ->assertDontSee('Social Post');
     }
 
     public function test_property_detail_shows_marketing_for_that_property_only(): void
